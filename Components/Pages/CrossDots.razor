@@ -1,0 +1,196 @@
+@page "/"
+@using CrossDotsBlazor
+@rendermode InteractiveServer
+@inject NavigationManager NavManager
+
+<h3 style="text-align:center;color:darkblue;">Крестики-нолики</h3>
+
+@if (!gameStarted)
+{
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:20px;">
+        <input @bind="name1" placeholder="Имя Игрока 1" style="padding:5px;width:200px;font-size:16px;" />
+        <input @bind="name2" placeholder="Имя Игрока 2" style="padding:5px;width:200px;font-size:16px;" />
+        <input type="number" @bind="size" min="3" style="padding:5px;width:200px;font-size:16px;" placeholder="Размер поля" />
+        <button @onclick="StartGame" style="padding:8px 16px;font-size:16px;background-color:darkblue;color:white;border:none;border-radius:5px;cursor:pointer;">
+            Начать игру
+        </button>
+    </div>
+}
+else
+{
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:20px;">
+        @if (!gameOver)
+        {
+            <p style="font-size:18px;font-weight:bold;color:darkgreen;">@(game.Current.Name) (@game.Current.Symbol), ваш ход</p>
+        }
+
+        <table style="border-collapse: collapse; margin-top:10px;">
+            @for (int y = 0; y < game.Size; y++)
+            {
+                <tr>
+                    @for (int x = 0; x < game.Size; x++)    
+                    {
+                        var cellY = y;
+                        var cellX = x;
+                        var cell = game.Board[cellY, cellX];
+                        var isWinningCell = winningCells.Contains((cellY, cellX));
+                        <td style="
+                            width:60px;
+                            height:60px;
+                            text-align:center;
+                            vertical-align:middle;
+                            border:2px solid black;
+                            cursor:@(gameOver ? "default" : "pointer");
+                            background-color:@(isWinningCell ? "#90EE90" : "#f0f0f0");
+                            font-weight:@(isWinningCell ? "bold" : "normal");
+                            font-size:24px;
+                            color:@(cell == Type_of_side.Crosses ? "red" : "blue");
+                            transition: all 0.2s;"
+                            @onclick="@(() => CellClick(cellY, cellX))">
+                            @(cell == Type_of_side.None ? "" : (cell == Type_of_side.Crosses ? "X" : "O"))
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+
+        @if (gameOver)
+        {
+            <p style="font-size:18px;font-weight:bold;color:darkred;margin-top:10px;">@message</p>
+            <div style="display:flex;gap:10px;">
+                <button @onclick="Revange" style="padding:8px 16px;font-size:16px;background-color:orange;color:white;border:none;border-radius:5px;cursor:pointer;">
+                    Реванш
+                </button>
+                <button @onclick="NewGame" style="padding:8px 16px;font-size:16px;background-color:darkblue;color:white;border:none;border-radius:5px;cursor:pointer;">
+                    Новая игра
+                </button>
+            </div>
+        }
+
+        <div style="margin-top:20px;">
+            <button @onclick="RefreshPage" style="padding:8px 16px;font-size:16px;background-color:gray;color:white;border:none;border-radius:5px;cursor:pointer;">
+                Обновить
+            </button>
+        </div>
+    </div>
+}
+
+@code {
+    GameMonitor game;
+    bool gameStarted = false;
+    bool gameOver = false;
+    string message = "";
+    List<(int y, int x)> winningCells = new();
+
+    string name1 = "";
+    string name2 = "";
+    int size = 3;
+
+    void StartGame()
+    {
+        if (string.IsNullOrWhiteSpace(name1) || string.IsNullOrWhiteSpace(name2))
+            return;
+        if (size < 3)
+            size = 3;
+
+        game = new GameMonitor(size, name1, name2);
+        gameStarted = true;
+        gameOver = false;
+        message = "";
+        winningCells.Clear();
+        StateHasChanged(); // Обновляем UI
+    }
+
+    void CellClick(int y, int x)
+    {
+        if (gameOver) return;
+        if (!game.MakeMove(y, x)) return;
+
+        var winnerLine = GetWinningLine(game.Current);
+        if (winnerLine.Count > 0)
+        {
+            message = $"Победил игрок {game.Current.Name} ({game.Current.Symbol})!";
+            gameOver = true;
+            winningCells = winnerLine;
+        }
+        else if (game.IsDraw())
+        {
+            message = "Ничья!";
+            gameOver = true;
+            winningCells.Clear();
+        }
+        else
+        {
+            game.SwitchPlayer();
+        }
+        StateHasChanged();
+    }
+
+    void Revange()
+    {
+        game.Restart(swapSides: true);
+        gameOver = false;
+        message = "";
+        winningCells.Clear();
+        StateHasChanged();
+    }
+
+    void NewGame()
+    {
+        gameStarted = false;
+        name1 = name2 = "";
+        winningCells.Clear();
+        StateHasChanged();
+    }
+
+    void RefreshPage()
+    {
+        NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
+    }
+
+    List<(int y, int x)> GetWinningLine(Player player)
+    {
+        var side = player.Side;
+        var line = new List<(int, int)>();
+
+        // строки
+        for (int y = 0; y < game.Size; y++)
+        {
+            bool win = true;
+            for (int x = 0; x < game.Size; x++)
+                if (game.Board[y, x] != side) win = false;
+            if (win)
+            {
+                for (int x = 0; x < game.Size; x++) line.Add((y, x));
+                return line;
+            }
+        }
+
+        // столбцы
+        for (int x = 0; x < game.Size; x++)
+        {
+            bool win = true;
+            for (int y = 0; y < game.Size; y++)
+                if (game.Board[y, x] != side) win = false;
+            if (win)
+            {
+                for (int y = 0; y < game.Size; y++) line.Add((y, x));
+                return line;
+            }
+        }
+
+        // диагонали
+        bool diag1 = true, diag2 = true;
+        for (int i = 0; i < game.Size; i++)
+        {
+            if (game.Board[i, i] != side) diag1 = false;
+            if (game.Board[i, game.Size - 1 - i] != side) diag2 = false;
+        }
+        if (diag1)
+            for (int i = 0; i < game.Size; i++) line.Add((i, i));
+        else if (diag2)
+            for (int i = 0; i < game.Size; i++) line.Add((i, game.Size - 1 - i));
+
+        return line;
+    }
+}
