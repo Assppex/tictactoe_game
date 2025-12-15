@@ -1,0 +1,7 @@
+services:
+  blazor_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: #Порты внаружу, то есть localhost:15672 <-> перекидывается на порт 15672 моего контейнера
+      - 1234:8080
