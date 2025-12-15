@@ -1,0 +1,7 @@
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/cros_dots_hw_blazor
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/appsettings.Development.json
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/appsettings.json
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/cros_dots_hw_blazor.dll
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/cros_dots_hw_blazor.deps.json
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/cros_dots_hw_blazor.runtimeconfig.json
+/home/artem/c_sharp_projects/cros_dots_hw_blazor/bin/Release/net8.0/publish/cros_dots_hw_blazor.pdb

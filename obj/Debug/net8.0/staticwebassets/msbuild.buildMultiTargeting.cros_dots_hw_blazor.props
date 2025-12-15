@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/cros_dots_hw_blazor.props" />
+</Project>

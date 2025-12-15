@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/cros_dots_hw_blazor.props" />
+</Project>

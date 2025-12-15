@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/home/artem/c_sharp_projects/cros_dots_hw_blazor/obj/Release/net8.0/scopedcss/projectbundle/cros_dots_hw_blazor.bundle.scp.css",
+      "PackagePath": "staticwebassets/cros_dots_hw_blazor.bundle.scp.css"
+    },
+    {
+      "Id": "/home/artem/c_sharp_projects/cros_dots_hw_blazor/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/home/artem/c_sharp_projects/cros_dots_hw_blazor/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/home/artem/c_sharp_projects/cros_dots_hw_blazor/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/home/artem/c_sharp_projects/cros_dots_hw_blazor/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.build.cros_dots_hw_blazor.props",
+      "PackagePath": "build\\cros_dots_hw_blazor.props"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.buildMultiTargeting.cros_dots_hw_blazor.props",
+      "PackagePath": "buildMultiTargeting\\cros_dots_hw_blazor.props"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.buildTransitive.cros_dots_hw_blazor.props",
+      "PackagePath": "buildTransitive\\cros_dots_hw_blazor.props"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.cros_dots_hw_blazor.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
