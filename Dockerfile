@@ -7,6 +7,8 @@ WORKDIR /app
 
 COPY . /app
 
+WORKDIR /app/test_proj
+
 RUN dotnet publish -c Release -o /app/publish
 
 WORKDIR /app/publish
